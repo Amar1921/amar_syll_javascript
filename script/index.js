@@ -5,19 +5,30 @@ $(function () {
     /**************SET DATA OF API************/
     function setDataWeatherCity(data) {
         const city = _.get(data, 'name', 'Not found')
-        const temp = _.get(data.main, 'temp', ' ')
+        const temperature = _.get(data.main, 'temp', ' ')
         const temM = _.get(data.main, 'temp_max', ' ')
         const tem_m = _.get(data.main, 'temp_min', ' ')
         const speed = _.get(data.wind, 'speed', ' ')
         const humidity = _.get(data.main, 'humidity', ' ')
+        const country = _.get(data.sys ,'country', ' ')
         // console.log(data)
-        $("#City").html(city)
-        $('#temp').html(temp)
-        $('#tempM').html(temM)
-        $('#temp-m').html(tem_m)
-        $('#hum').html(humidity)
-        $('#Vv').html(speed)
-        $('#input').val(city)
+       if(city !=='Not found'){
+           $("#City").html(city+` <span>${country}</span>`)
+           $('#temp').html(temperature+' <span>&deg;C</span>')
+           $('#tempM').html(temM+' <span>&deg;C</span>')
+           $('#temp-m').html(tem_m+' <span>&deg;C</span>')
+           $('#hum').html(humidity+' <span>%</span>')
+           $('#Vv').html(speed+' <span>km/h</span>')
+           $('#input').val(city)
+       }else {
+           $("#City").html(city)
+           $('#temp').html(temperature)
+           $('#tempM').html(temM)
+           $('#temp-m').html(tem_m)
+           $('#hum').html(humidity)
+           $('#Vv').html(speed)
+           $('#input').val(" ")
+       }
     }
 
     /***************************FETCH API**********************/
@@ -27,7 +38,7 @@ $(function () {
         fetch(url)
             .then(response => response.json())
             .then(response => {
-                //console.log(data)
+                console.log(response)
                 setDataWeatherCity(response)
             })
             .catch(error => {
